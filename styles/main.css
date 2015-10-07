@@ -145,14 +145,6 @@ a img{
     margin-right: 16px;
   }
 
-  .android-more-button {
-    -webkit-box-ordinal-group: 4;
-    -webkit-order: 3;
-        -ms-flex-order: 3;
-            order: 3;
-  }
-
-
 .android-drawer {
   border-right: none;
 }

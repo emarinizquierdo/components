@@ -1,6 +1,8 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 var _riot = require('riot');
@@ -11,38 +13,105 @@ var _router = require('./router');
 
 var _router2 = _interopRequireDefault(_router);
 
-},{"./router":4,"riot":7}],2:[function(require,module,exports){
+var _riotLogoTag = require('./riotLogo.tag');
+
+var riotLogo = _interopRequireWildcard(_riotLogoTag);
+
+var _moreVerticalTag = require('./moreVertical.tag');
+
+var moreVertical = _interopRequireWildcard(_moreVerticalTag);
+
+var _searchBoxTag = require('./searchBox.tag');
+
+var searchBox = _interopRequireWildcard(_searchBoxTag);
+
+var _footerTag = require('./footer.tag');
+
+var footer = _interopRequireWildcard(_footerTag);
+
+var _riotMapTag = require('./riotMap.tag');
+
+var map = _interopRequireWildcard(_riotMapTag);
+
+_riot2['default'].mount('riot-logo');
+_riot2['default'].mount('riot-footer');
+_riot2['default'].mount('more-vertical');
+_riot2['default'].mount('search-box');
+
+},{"./footer.tag":3,"./moreVertical.tag":5,"./riotLogo.tag":6,"./riotMap.tag":7,"./router":8,"./searchBox.tag":9,"riot":13}],2:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
 var config = {};
 
-config.views = [{ title: 'Home', ref: 'home' }, { title: 'Mis rutas', ref: 'myroutes' }];
+config.views = [{ title: 'Home', ref: 'home' }, { title: 'Rutas', ref: 'routes' }, { title: 'Mis rutas', ref: 'myroutes' }];
 
 exports.config = config;
 
 },{}],3:[function(require,module,exports){
 var riot = require('riot');
-module.exports = riot.tag('horizontal-navbar', '<div class="android-navigation-container"> <nav class="android-navigation mdl-navigation"> <a each="{ tab, i in config.views }" class="mdl-navigation__link mdl-typography--text-uppercase { is-active: parent.isActiveTab(tab.ref) }" onclick="{ parent.toggleTab }">{tab.title}</a> </nav> </div>', function(opts) {
-
-this.config = this.opts.config || {};
-  this.activeTab = this.config.views[0];
-
-
-  this.isActiveTab = function(tab) {
-    return this.activeTab === tab;
-  }.bind(this);
-
-  this.toggleTab = function(e) {
-    this.activeTab = e.item.tab.ref;
-    riot.route(this.activeTab);
-    return true
-  }.bind(this);
+module.exports = riot.tag('riot-footer', '<footer class="android-footer mdl-mega-footer"> <div class="mdl-mega-footer--top-section"> <div class="mdl-mega-footer--left-section"> <button class="mdl-mega-footer--social-btn"></button> &nbsp; <button class="mdl-mega-footer--social-btn"></button> &nbsp; <button class="mdl-mega-footer--social-btn"></button> </div> <div class="mdl-mega-footer--right-section"> <a class="mdl-typography--font-light" href="#top"> Back to Top <i class="material-icons">expand_less</i> </a> </div> </div> <div class="mdl-mega-footer--middle-section"> <p class="mdl-typography--font-light">Satellite imagery: © 2014 Astrium, DigitalGlobe</p> <p class="mdl-typography--font-light">Some features and devices may not be available in all areas</p> </div> <div class="mdl-mega-footer--bottom-section"> <a class="android-link android-link-menu mdl-typography--font-light" id="version-dropdown"> Versions <i class="material-icons">arrow_drop_up</i> </a> <ul class="mdl-menu mdl-js-menu mdl-menu--top-left mdl-js-ripple-effect" for="version-dropdown"> <li class="mdl-menu__item">5.0 Lollipop</li> <li class="mdl-menu__item">4.4 KitKat</li> <li class="mdl-menu__item">4.3 Jelly Bean</li> <li class="mdl-menu__item">Android History</li> </ul> <a class="android-link android-link-menu mdl-typography--font-light" id="developers-dropdown"> For Developers <i class="material-icons">arrow_drop_up</i> </a> <ul class="mdl-menu mdl-js-menu mdl-menu--top-left mdl-js-ripple-effect" for="developers-dropdown"> <li class="mdl-menu__item">App developer resources</li> <li class="mdl-menu__item">Android Open Source Project</li> <li class="mdl-menu__item">Android SDK</li> <li class="mdl-menu__item">Android for Work</li> </ul> <a class="android-link mdl-typography--font-light" href="">Blog</a> <a class="android-link mdl-typography--font-light" href="">Privacy Policy</a> </div> </footer>', function(opts) {
 
 
 
 });
-},{"riot":7}],4:[function(require,module,exports){
+},{"riot":13}],4:[function(require,module,exports){
+var riot = require('riot');
+module.exports = riot.tag('horizontal-navbar', '<div class="android-navigation-container"> <nav class="android-navigation mdl-navigation"> <a each="{ tab, i in config.views }" class="mdl-navigation__link mdl-typography--text-uppercase { is-active: parent.isActiveTab(tab.ref) }" onclick="{ parent.toggleTab }">{tab.title}</a> </nav> </div>', 'horizontal-navbar, [riot-tag="horizontal-navbar"]{ display: block; } horizontal-navbar a, [riot-tag="horizontal-navbar"] a{ cursor: pointer; }', function(opts) {
+
+    this.config = this.opts.config || {};
+    this.activeTab = this.config.views[0];
+
+
+    this.isActiveTab = function(tab) {
+      return this.activeTab === tab;
+    }.bind(this);
+
+    this.toggleTab = function(e) {
+      this.activeTab = e.item.tab.ref;
+      riot.route(this.activeTab);
+      return true
+    }.bind(this);
+
+  
+});
+},{"riot":13}],5:[function(require,module,exports){
+var riot = require('riot');
+module.exports = riot.tag('more-vertical', '<button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect" id="more-button"> <i class="material-icons">more_vert</i> </button> <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button"> <li class="mdl-menu__item">5.0 Lollipop</li> <li class="mdl-menu__item">4.4 KitKat</li> <li disabled class="mdl-menu__item">4.3 Jelly Bean</li> <li class="mdl-menu__item">Android History</li> </ul>', 'more-vertical, [riot-tag="more-vertical"]{ display: block; position: relative; } more-vertical h3, [riot-tag="more-vertical"] h3{ font-size: 120% } more-vertical .android-more-button, [riot-tag="more-vertical"] .android-more-button{ -webkit-box-ordinal-group: 4; -webkit-order: 3; -ms-flex-order: 3; order: 3; }', function(opts) {
+
+    
+    
+});
+},{"riot":13}],6:[function(require,module,exports){
+var riot = require('riot');
+module.exports = riot.tag('riot-logo', '<span class="android-title mdl-layout-title"> <img class="android-logo-image" src="images/android-logo.png"> </span> <span class="android-mobile-title mdl-layout-title"> <img class="android-logo-image" src="images/android-logo.png"> </span>', function(opts) {
+
+
+});
+},{"riot":13}],7:[function(require,module,exports){
+var riot = require('riot');
+module.exports = riot.tag('riot-map', '<div id="map"></div>', function(opts) {
+
+		var map,
+			mapWrapper;
+
+		function initMap() {
+			  map = new google.maps.Map(this.map, {
+			    center: {lat: -34.397, lng: 150.644},
+			    zoom: 8
+			  });
+		}
+
+		
+
+		this.on('mount', function(){
+			debugger;
+   mapWrapper = document.getElementById('map');
+  })
+initMap();
+    
+});
+},{"riot":13}],8:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -69,6 +138,10 @@ var _viewHomeTag = require('./viewHome.tag');
 
 var home = _interopRequireWildcard(_viewHomeTag);
 
+var _viewRoutesTag = require('./viewRoutes.tag');
+
+var routes = _interopRequireWildcard(_viewRoutesTag);
+
 riot.mount('navbar', config);
 riot.mount('horizontal-navbar', config);
 riot.mount('vertical-navbar', config);
@@ -84,11 +157,15 @@ riot.route(function (view) {
     mounter(view);
 });
 
-},{"./config":2,"./horizontalNavbar.tag":3,"./verticalNavbar.tag":5,"./viewHome.tag":6,"riot":7}],5:[function(require,module,exports){
+},{"./config":2,"./horizontalNavbar.tag":4,"./verticalNavbar.tag":10,"./viewHome.tag":11,"./viewRoutes.tag":12,"riot":13}],9:[function(require,module,exports){
+var riot = require('riot');
+module.exports = riot.tag('search-box', '<div class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width"> <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field"> <i class="material-icons">search</i> </label> <div class="mdl-textfield__expandable-holder"> <input class="mdl-textfield__input" type="text" id="search-field"> </div> </div>', function(opts) {
+
+
+});
+},{"riot":13}],10:[function(require,module,exports){
 var riot = require('riot');
 module.exports = riot.tag('vertical-navbar', '<span class="mdl-layout-title"> <img class="android-logo-image" src="images/android-logo-white.png"> </span> <nav class="mdl-navigation"> <a each="{ tab, i in config.views }" class="mdl-navigation__link mdl-typography--text-uppercase { is-active: parent.isActiveTab(tab.ref) }" onclick="{ parent.toggleTab }">{tab.title}</a> </nav>', function(opts) {
-
-
 
 this.config = this.opts.config || {};
   this.activeTab = this.config.views[0];
@@ -105,15 +182,22 @@ this.config = this.opts.config || {};
   }.bind(this);
 
 
-
 });
-},{"riot":7}],6:[function(require,module,exports){
+},{"riot":13}],11:[function(require,module,exports){
 var riot = require('riot');
 module.exports = riot.tag('view-home', '<a name="top"></a> <div class="android-be-together-section mdl-typography--text-center"> <div class="android-font android-slogan">be together. not the same.</div> <div class="android-font android-sub-slogan">welcome to android... be yourself. do your thing. see what\'s going on.</div> <div class="android-font android-create-character"> <a href=""><img src="images/andy.png"> create your android character</a> </div> <a href="#screens"> <button class="android-fab mdl-button mdl-button--colored mdl-js-button mdl-button--fab mdl-js-ripple-effect"> <i class="material-icons">expand_more</i> </button> </a> </div> <div class="android-screen-section mdl-typography--text-center"> <a name="screens"></a> <div class="mdl-typography--display-1-color-contrast">Powering screens of all sizes</div> <div class="android-screens"> <div class="android-wear android-screen"> <a class="android-image-link" href=""> <img class="android-screen-image" src="images/wear-silver-on.png"> <img class="android-screen-image" src="images/wear-black-on.png"> </a> <a class="android-link mdl-typography--font-regular mdl-typography--text-uppercase" href="">Android Wear</a> </div> <div class="android-phone android-screen"> <a class="android-image-link" href=""> <img class="android-screen-image" src="images/nexus6-on.jpg"> </a> <a class="android-link mdl-typography--font-regular mdl-typography--text-uppercase" href="">Phones</a> </div> <div class="android-tablet android-screen"> <a class="android-image-link" href=""> <img class="android-screen-image" src="images/nexus9-on.jpg"> </a> <a class="android-link mdl-typography--font-regular mdl-typography--text-uppercase" href="">Tablets</a> </div> <div class="android-tv android-screen"> <a class="android-image-link" href=""> <img class="android-screen-image" src="images/tv-on.jpg"> </a> <a class="android-link mdl-typography--font-regular mdl-typography--text-uppercase" href="">Android TV</a> </div> <div class="android-auto android-screen"> <a class="android-image-link" href=""> <img class="android-screen-image" src="images/auto-on.jpg"> </a> <a class="android-link mdl-typography--font-regular mdl-typography--text-uppercase mdl-typography--text-left" href="">Coming Soon: Android Auto</a> </div> </div> </div> <div class="android-wear-section"> <div class="android-wear-band"> <div class="android-wear-band-text"> <div class="mdl-typography--display-2 mdl-typography--font-thin">The best of Google built in</div> <p class="mdl-typography--headline mdl-typography--font-thin"> Android works perfectly with your favourite apps like Google Maps, Calendar and YouTube. </p> <p> <a class="mdl-typography--font-regular mdl-typography--text-uppercase android-alt-link" href=""> See what\'s new in the Play Store&nbsp;<i class="material-icons">chevron_right</i> </a> </p> </div> </div> </div> <div class="android-customized-section"> <div class="android-customized-section-text"> <div class="mdl-typography--font-light mdl-typography--display-1-color-contrast">Customised by you, for you</div> <p class="mdl-typography--font-light"> Put the stuff that you care about right on your home screen: the latest news, the weather or a stream of your recent photos. <br> <a href="" class="android-link mdl-typography--font-light">Customise your phone</a> </p> </div> <div class="android-customized-section-image"></div> </div> <div class="android-more-section"> <div class="android-section-title mdl-typography--display-1-color-contrast">More from Android</div> <div class="android-card-container mdl-grid"> <div class="mdl-cell mdl-cell--3-col mdl-cell--4-col-tablet mdl-cell--4-col-phone mdl-card mdl-shadow--3dp"> <div class="mdl-card__media"> <img src="images/more-from-1.png"> </div> <div class="mdl-card__title"> <h4 class="mdl-card__title-text">Get going on Android</h4> </div> <div class="mdl-card__supporting-text"> <span class="mdl-typography--font-light mdl-typography--subhead">Four tips to make your switch to Android quick and easy</span> </div> <div class="mdl-card__actions"> <a class="android-link mdl-button mdl-js-button mdl-typography--text-uppercase" href=""> Make the switch <i class="material-icons">chevron_right</i> </a> </div> </div> <div class="mdl-cell mdl-cell--3-col mdl-cell--4-col-tablet mdl-cell--4-col-phone mdl-card mdl-shadow--3dp"> <div class="mdl-card__media"> <img src="images/more-from-4.png"> </div> <div class="mdl-card__title"> <h4 class="mdl-card__title-text">Create your own Android character</h4> </div> <div class="mdl-card__supporting-text"> <span class="mdl-typography--font-light mdl-typography--subhead">Turn the little green Android mascot into you, your friends, anyone!</span> </div> <div class="mdl-card__actions"> <a class="android-link mdl-button mdl-js-button mdl-typography--text-uppercase" href=""> androidify.com <i class="material-icons">chevron_right</i> </a> </div> </div> <div class="mdl-cell mdl-cell--3-col mdl-cell--4-col-tablet mdl-cell--4-col-phone mdl-card mdl-shadow--3dp"> <div class="mdl-card__media"> <img src="images/more-from-2.png"> </div> <div class="mdl-card__title"> <h4 class="mdl-card__title-text">Get a clean customisable home screen</h4> </div> <div class="mdl-card__supporting-text"> <span class="mdl-typography--font-light mdl-typography--subhead">A clean, simple, customisable home screen that comes with the power of Google Now: Traffic alerts, weather and much more, just a swipe away.</span> </div> <div class="mdl-card__actions"> <a class="android-link mdl-button mdl-js-button mdl-typography--text-uppercase" href=""> Download now <i class="material-icons">chevron_right</i> </a> </div> </div> <div class="mdl-cell mdl-cell--3-col mdl-cell--4-col-tablet mdl-cell--4-col-phone mdl-card mdl-shadow--3dp"> <div class="mdl-card__media"> <img src="images/more-from-3.png"> </div> <div class="mdl-card__title"> <h4 class="mdl-card__title-text">Millions to choose from</h4> </div> <div class="mdl-card__supporting-text"> <span class="mdl-typography--font-light mdl-typography--subhead">Hail a taxi, find a recipe, run through a temple – Google Play has all the apps and games that let you make your Android device uniquely yours.</span> </div> <div class="mdl-card__actions"> <a class="android-link mdl-button mdl-js-button mdl-typography--text-uppercase" href=""> Find apps <i class="material-icons">chevron_right</i> </a> </div> </div> </div> </div>', function(opts) {
 
 
 });
-},{"riot":7}],7:[function(require,module,exports){
+},{"riot":13}],12:[function(require,module,exports){
+var riot = require('riot');
+module.exports = riot.tag('view-routes', '<a name="top"></a> <div class="android-be-together-section mdl-typography--text-center"> testing <riot-map></riot-map> </div>', function(opts) {
+        debugger;
+        riot.mount('riot-map');
+
+        
+});
+},{"riot":13}],13:[function(require,module,exports){
 /* Riot v2.2.4, @license MIT, (c) 2015 Muut Inc. + contributors */
 
 ;(function(window, undefined) {

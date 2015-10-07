@@ -8,7 +8,7 @@
           <a each={ tab, i in config.views } class="mdl-navigation__link mdl-typography--text-uppercase { is-active: parent.isActiveTab(tab.ref) }" onclick={ parent.toggleTab }>{tab.title}</a>
         </nav>
 
-
+<script>
 
 this.config = this.opts.config || {};
   this.activeTab = this.config.views[0];
@@ -23,6 +23,8 @@ this.config = this.opts.config || {};
     riot.route(this.activeTab);
     return true
   }
+
+</script>
 
 
 </vertical-navbar>
