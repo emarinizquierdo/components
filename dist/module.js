@@ -1,8 +1,6 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 var _riot = require('riot');
@@ -15,23 +13,23 @@ var _router2 = _interopRequireDefault(_router);
 
 var _riotLogoTag = require('./riotLogo.tag');
 
-var riotLogo = _interopRequireWildcard(_riotLogoTag);
+var _riotLogoTag2 = _interopRequireDefault(_riotLogoTag);
 
 var _moreVerticalTag = require('./moreVertical.tag');
 
-var moreVertical = _interopRequireWildcard(_moreVerticalTag);
+var _moreVerticalTag2 = _interopRequireDefault(_moreVerticalTag);
 
 var _searchBoxTag = require('./searchBox.tag');
 
-var searchBox = _interopRequireWildcard(_searchBoxTag);
+var _searchBoxTag2 = _interopRequireDefault(_searchBoxTag);
 
 var _footerTag = require('./footer.tag');
 
-var footer = _interopRequireWildcard(_footerTag);
+var _footerTag2 = _interopRequireDefault(_footerTag);
 
 var _riotMapTag = require('./riotMap.tag');
 
-var map = _interopRequireWildcard(_riotMapTag);
+var _riotMapTag2 = _interopRequireDefault(_riotMapTag);
 
 _riot2['default'].mount('riot-logo');
 _riot2['default'].mount('riot-footer');
@@ -42,11 +40,22 @@ _riot2['default'].mount('search-box');
 'use strict';
 
 exports.__esModule = true;
-var config = {};
 
-config.views = [{ title: 'Home', ref: 'home' }, { title: 'Rutas', ref: 'routes' }, { title: 'Mis rutas', ref: 'myroutes' }];
+var config = {
+    views: [{
+        title: 'Home',
+        ref: 'home'
+    }, {
+        title: 'Rutas',
+        ref: 'routes'
+    }, {
+        title: 'Mis rutas',
+        ref: 'myroutes'
+    }]
+};
 
-exports.config = config;
+exports['default'] = config;
+module.exports = exports['default'];
 
 },{}],3:[function(require,module,exports){
 var riot = require('riot');
@@ -59,7 +68,7 @@ module.exports = riot.tag('riot-footer', '<footer class="android-footer mdl-mega
 var riot = require('riot');
 module.exports = riot.tag('horizontal-navbar', '<div class="android-navigation-container"> <nav class="android-navigation mdl-navigation"> <a each="{ tab, i in config.views }" class="mdl-navigation__link mdl-typography--text-uppercase { is-active: parent.isActiveTab(tab.ref) }" onclick="{ parent.toggleTab }">{tab.title}</a> </nav> </div>', 'horizontal-navbar, [riot-tag="horizontal-navbar"]{ display: block; } horizontal-navbar a, [riot-tag="horizontal-navbar"] a{ cursor: pointer; }', function(opts) {
 
-    this.config = this.opts.config || {};
+    this.config = this.opts || {};
     this.activeTab = this.config.views[0];
 
 
@@ -90,25 +99,48 @@ module.exports = riot.tag('riot-logo', '<span class="android-title mdl-layout-ti
 });
 },{"riot":13}],7:[function(require,module,exports){
 var riot = require('riot');
-module.exports = riot.tag('riot-map', '<div id="map"></div>', function(opts) {
+module.exports = riot.tag('riot-map', '<div id="map"></div>', 'riot-map, [riot-tag="riot-map"]{ width: 100%; height: 400px; position: relative; } riot-map #map, [riot-tag="riot-map"] #map{ width: 100%; height: 100%; }', function(opts) {
+
 
 		var map,
 			mapWrapper;
 
 		function initMap() {
-			  map = new google.maps.Map(this.map, {
+			  map = new google.maps.Map(mapWrapper, {
 			    center: {lat: -34.397, lng: 150.644},
 			    zoom: 8
 			  });
+
+$.get("/api/route", function(data, status){
+
+			  		var routeCorrd = data[0].geometry.coordinates.map(function(a){return {lat : a[1], lng: a[0]}})
+
+			  		var flightPath = new google.maps.Polyline({
+			    path: routeCorrd,
+			    geodesic: true,
+			    strokeColor: '#FF0000',
+			    strokeOpacity: 1.0,
+			    strokeWeight: 2
+			  });
+
+			  		flightPath.setMap(map);
+
+    });
+
+
+
+
+			  
+
 		}
 
 		
 
 		this.on('mount', function(){
-			debugger;
-   mapWrapper = document.getElementById('map');
-  })
-initMap();
+		   mapWrapper = document.getElementById('map');
+		   initMap();
+		})
+	
     
 });
 },{"riot":13}],8:[function(require,module,exports){
@@ -116,44 +148,44 @@ initMap();
 
 exports.__esModule = true;
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 var _riot = require('riot');
 
-var riot = _interopRequireWildcard(_riot);
+var _riot2 = _interopRequireDefault(_riot);
 
 var _config = require('./config');
 
-var config = _interopRequireWildcard(_config);
+var _config2 = _interopRequireDefault(_config);
 
 var _horizontalNavbarTag = require('./horizontalNavbar.tag');
 
-var hnavbar = _interopRequireWildcard(_horizontalNavbarTag);
+var _horizontalNavbarTag2 = _interopRequireDefault(_horizontalNavbarTag);
 
 var _verticalNavbarTag = require('./verticalNavbar.tag');
 
-var vnavbar = _interopRequireWildcard(_verticalNavbarTag);
+var _verticalNavbarTag2 = _interopRequireDefault(_verticalNavbarTag);
 
 var _viewHomeTag = require('./viewHome.tag');
 
-var home = _interopRequireWildcard(_viewHomeTag);
+var _viewHomeTag2 = _interopRequireDefault(_viewHomeTag);
 
 var _viewRoutesTag = require('./viewRoutes.tag');
 
-var routes = _interopRequireWildcard(_viewRoutesTag);
+var _viewRoutesTag2 = _interopRequireDefault(_viewRoutesTag);
 
-riot.mount('navbar', config);
-riot.mount('horizontal-navbar', config);
-riot.mount('vertical-navbar', config);
+_riot2['default'].mount('navbar', _config2['default']);
+_riot2['default'].mount('horizontal-navbar', _config2['default']);
+_riot2['default'].mount('vertical-navbar', _config2['default']);
 
 var VIEW_CONTAINER = "#view-container";
 
 function mounter(view) {
     document.querySelector(VIEW_CONTAINER).innerHTML = '<view-' + view + '></view-' + view + '>';
-    riot.mount('view-' + view);
+    _riot2['default'].mount('view-' + view);
 }
 
-riot.route(function (view) {
+_riot2['default'].route(function (view) {
     mounter(view);
 });
 
@@ -167,7 +199,7 @@ module.exports = riot.tag('search-box', '<div class="android-search-box mdl-text
 var riot = require('riot');
 module.exports = riot.tag('vertical-navbar', '<span class="mdl-layout-title"> <img class="android-logo-image" src="images/android-logo-white.png"> </span> <nav class="mdl-navigation"> <a each="{ tab, i in config.views }" class="mdl-navigation__link mdl-typography--text-uppercase { is-active: parent.isActiveTab(tab.ref) }" onclick="{ parent.toggleTab }">{tab.title}</a> </nav>', function(opts) {
 
-this.config = this.opts.config || {};
+  this.config = this.opts || {};
   this.activeTab = this.config.views[0];
 
 
@@ -191,8 +223,7 @@ module.exports = riot.tag('view-home', '<a name="top"></a> <div class="android-b
 });
 },{"riot":13}],12:[function(require,module,exports){
 var riot = require('riot');
-module.exports = riot.tag('view-routes', '<a name="top"></a> <div class="android-be-together-section mdl-typography--text-center"> testing <riot-map></riot-map> </div>', function(opts) {
-        debugger;
+module.exports = riot.tag('view-routes', '<a name="top"></a> <riot-map></riot-map>', function(opts) {
         riot.mount('riot-map');
 
         

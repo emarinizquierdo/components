@@ -19,7 +19,7 @@
 
   <script>
 
-    this.config = this.opts.config || {};
+    this.config = this.opts || {};
     this.activeTab = this.config.views[0];
 
 

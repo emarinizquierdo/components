@@ -1,4 +1,5 @@
 module.exports = function(grunt) {
+
     grunt.initConfig({
         browserify: {
             dist: {
@@ -18,68 +19,81 @@ module.exports = function(grunt) {
                 }
             }
         },
-        watch: {
-            scripts: {
-                files: ["./modules/*.js", "./modules/*.tag", "index.html"],
-                tasks: ["browserify"],
+        express: {
+            options: {
+                port: process.env.PORT || 3000
+            },
+            dev: {
                 options: {
-                    // Start a live reload server on the default port 35729
-                    livereload: true,
+                    script: 'server/app.js',
+                    debug: true
+                }
+            },
+            prod: {
+                options: {
+                    script: 'dist/server/app.js'
                 }
             }
         },
-        'http-server': {
-
-            'dev': {
-
-                // the server root directory 
-                root: '.',
-
-                // the server port 
-                // can also be written as a function, e.g. 
-                // port: function() { return 8282; } 
-                port: 3000,
-
-                // the host ip address 
-                // If specified to, for example, "127.0.0.1" the server will 
-                // only be available on that ip. 
-                // Specify "0.0.0.0" to be available everywhere 
-                host: "0.0.0.0",
-
-                ///cache: 60000,
-                showDir: true,
-                autoIndex: true,
-
-                // server default file extension 
-                ext: "html",
-
-                // run in parallel with other tasks 
-                runInBackground: true,
-
-                // specify a logger function. By default the requests are 
-                // sent to stdout. 
-                logFn: function(req, res, error) {},
-
-                // Proxies all requests which can't be resolved locally to the given url 
-                // Note this this will disable 'showDir' 
-                ///proxy: "http://someurl.com",
-
-                /// Use 'https: true' for default module SSL configuration 
-                /// (default state is disabled) 
-                ///https: {
-                ///cert: "cert.pem",
-                ///key : "key.pem"
-                ///}
-
+        open: {
+            server: {
+                url: 'http://localhost:<%= express.options.port %>'
             }
-
-        }
+        },
+        watch: {
+            gruntfile: {
+                files: ['Gruntfile.js']
+            },
+            livereload: {
+                files: ['server/**/*.{js,json}', 'modules/**/*'],
+                tasks: ['browserify:dist', 'express:dev', 'wait'],
+                options: {
+                    livereload: true,
+                    nospawn: true //Without this option specified express won't be reloaded
+                }
+            },
+            express: {
+                files: [
+                    'server/**/*.{js,json}'
+                ],
+                tasks: ['browserify:dist', 'express:dev', 'wait'],
+                options: {
+                    livereload: true,
+                    nospawn: true //Without this option specified express won't be reloaded
+                }
+            }
+        },
     });
+
 
     grunt.loadNpmTasks("grunt-browserify");
     grunt.loadNpmTasks("grunt-contrib-watch");
-    grunt.loadNpmTasks('grunt-http-server');
+    grunt.loadNpmTasks('grunt-express-server');
+    grunt.loadNpmTasks('grunt-wait');
+    grunt.loadNpmTasks('grunt-open');
 
-    grunt.registerTask("default", ["http-server", "watch"]);
+    // Used for delaying livereload until after server has restarted
+    grunt.registerTask('wait', function() {
+        grunt.log.ok('Waiting for server reload...');
+
+        var done = this.async();
+
+        setTimeout(function() {
+            grunt.log.writeln('Done waiting!');
+            done();
+        }, 1500);
+    });
+
+    grunt.registerTask("default", [
+        'express:dev',
+        'wait',
+        //'open',
+        'watch'
+    ]);
+
+    grunt.registerTask('express-keepalive', 'Keep grunt running', function() {
+        this.async();
+    });
+
     grunt.registerTask("build", ["browserify"]);
 };
