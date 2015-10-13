@@ -18,7 +18,7 @@ function mounter(view) {
 }
 
 riot.route(function(view) {
-	mounter(view);
+    mounter(view);
 });
 
 export {};
